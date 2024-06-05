@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block title %}Cookable - Accueil{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/united/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/united/_variables.scss" />
+{% endblock %}
+{% block body %}
+    <div class="container mt-4">
+        <div class="jumbotron">
+            <h1 class="display-4">Bienvenue sur Cookable</h1>
+            <p class="lead">Bienvenue sur Cookable, votre destination incontournable pour découvrir et partager les meilleures recettes de cuisine.<br/>
+                            Notre application vous permet de trouver l'inspiration culinaire grâce aux contributions de passionnés comme vous.</p>
+            <hr class="my-4">
+            <p>Rejoignez notre communauté gourmande sur <a href="/">Cookable</a> et enrichissez votre carnet de recettes avec des plats variés et savoureux.<br/>
+               Partagez vos créations et explorez les idées culinaires des autres membres pour faire de chaque repas une expérience unique.</p>
+            <a class="btn btn-primary btn-lg" href="#" role="button">S'inscrire</a>
+        </div>
+    </div>
+{% endblock %}
