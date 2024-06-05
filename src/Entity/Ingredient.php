@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
 class Ingredient
@@ -14,12 +15,27 @@ class Ingredient
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Unique(message: "This name already exists")]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: "The name must be at least {{ limit }} characters long",
+        maxMessage: "The name cannot be longer than {{ limit }} characters"
+    )]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "The price cannot be null")]
+    #[Assert\Positive(message: "The price must be a positive number")]
+    #[Assert\LessThanOrEqual(
+        value: 200,
+        message: "The price cannot be greater than {{ compared_value }}"
+    )]
     private ?float $price = null;
 
     #[ORM\Column]
+    #[Assert\NotNull(message: "The createdAt date cannot be null")]
     private ?\DateTimeImmutable $createdAt = null;
 
     public function getId(): ?int
