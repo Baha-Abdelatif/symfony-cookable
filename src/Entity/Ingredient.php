@@ -9,6 +9,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
 class Ingredient
 {
+/*
+ * @ORM\Entity(repositoryClass=IngredientRepository::class)
+ */
+    /**
+     * Ingredient constructor.
+     * set the createdAt property to the current date and time when a new Ingredient object is created.
+ */
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -23,7 +35,7 @@ class Ingredient
         minMessage: "The name must be at least {{ limit }} characters long",
         maxMessage: "The name cannot be longer than {{ limit }} characters"
     )]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\Column]
     #[Assert\NotNull(message: "The price cannot be null")]
@@ -32,7 +44,7 @@ class Ingredient
         value: 200,
         message: "The price cannot be greater than {{ compared_value }}"
     )]
-    private ?float $price = null;
+    private float $price;
 
     #[ORM\Column]
     #[Assert\NotNull(message: "The createdAt date cannot be null")]
@@ -72,10 +84,4 @@ class Ingredient
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
 }
