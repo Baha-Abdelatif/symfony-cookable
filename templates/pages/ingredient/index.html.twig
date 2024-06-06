@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cookable - Ingredients{% endblock %}
+
+
+{% block body %}
+<div class="container">
+<h1 class="my-4">Mes Ingredients</h1>
+    <div class="container mx-auto row">
+
+    <table class="table table-bordered table-hover table-striped col-md-8">
+        <thead class="thead-primary">
+        <tr class="table-primary">
+            <th scope="col"><strong>#</strong></th>
+            <th scope="col">Ingredient</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Crée le</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ingredient in ingredients %}
+            <tr>
+                <th scope="row">{{ ingredient.id }}</th>
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient.price }}€</td>
+                <td>{{ ingredient.createdAt|date("d-m-Y") }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}
