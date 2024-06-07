@@ -4,35 +4,99 @@
 
 
 {% block body %}
-<div class="container row text-center">
-<h1 class="my-4">Mes Ingrédients</h1>
-    <div class="container mx-auto col-4">
-<div class="count text-end">
-    <small>Total : {{ ingredients.getTotalItemCount }} ingrédients</small>
-</div>
-    <table class="table table-bordered table-hover table-striped text-end">
-        <thead class="thead-primary">
-        <tr class="table-primary">
-            <th class="px-3" scope="col"><strong>#</strong></th>
-            <th class="px-3 text-start" scope="col">Ingrédient</th>
-            <th class="px-3" scope="col">Prix</th>
-            <th class="px-3" scope="col">Crée le</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for ingredient in ingredients %}
-            <tr>
-                <th class="px-3" scope="row">{{ "%02d"|format(ingredient.id) }}</th>
-                <td class="px-3 text-start">{{ ingredient.name }}</td>
-                <td class="px-3">{{ ingredient.price }}€</td>
-                <td class="px-3">{{ ingredient.createdAt|date("d-m-Y") }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-        <div class="pagination mx-auto text-center">
-            {{ knp_pagination_render(ingredients) }}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>Succès : </strong> {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>Erreur : </strong> {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>Attention : </strong> {{ message }}
+        </div>
+    {% endfor %}
+    {% if  ingredients|length > 0 %}
+    <div class="container row text-center">
+        <h1 class="my-4">Mes Ingrédients</h1>
+        <div class="container mx-auto col-6">
+            <div class="count text-end d-flex flex-column my-2">
+                <small>Total : {{ ingredients.getTotalItemCount }} ingrédients</small>
+                <a class="btn btn-primary my-1" href="{{ path('ingredients.create') }}">Ajouter un ingrédient</a>
+            </div>
+            <table class="table table-bordered table-hover table-striped text-end">
+                <thead class="thead-primary">
+                <tr class="table-primary">
+                    <th class="px-3" scope="col"><strong>#</strong></th>
+                    <th class="px-3 text-start" scope="col">Ingrédient</th>
+                    <th class="px-3" scope="col">Prix</th>
+                    <th class="px-3" scope="col">Crée le</th>
+                    <th class="px-3" scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for ingredient in ingredients %}
+                    <tr>
+                        <th class="px-3 align-middle" scope="row">{{ "%02d"|format(ingredient.id) }}</th>
+                        <td class="px-3 text-start align-middle">{{ ingredient.name }}</td>
+                        <td class="px-3 align-middle">{{ ingredient.price }}€</td>
+                        <td class="px-3 align-middle">{{ ingredient.createdAt|date("d-m-Y") }}</td>
+                        <td class="d-flex align-items-center justify-content-evenly">
+                            <a href="{{ path('ingredients.edit', {'id': ingredient.id}) }}"
+                               class="btn-outline-primary btn"
+                               title="Modifier l'ingrédient"
+                            >
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <button
+                               title="Supprimer l'ingrédient"
+                               type="button"
+                               class="btn-outline-danger btn"
+                               data-bs-toggle="modal" data-bs-target="#Modal{{ ingredient.id }}"
+                            >
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                            <div class="modal fade" id="Modal{{ ingredient.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Attention !</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            Voulez vous vraiment <strong class="text-danger">SUPPRIMER</strong>
+                                            l'ingrédient suivant : <br> <br>
+                                            "{{ingredient.name }}" ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-primary"
+                                                    data-bs-dismiss="modal">Annuler</button>
+                                            <a  href="{{ path('ingredients.delete', {'id': ingredient.id}) }}"
+                                                class="btn btn-danger">Supprimer</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination mx-auto text-center">
+                {{ knp_pagination_render(ingredients) }}
+            </div>
         </div>
     </div>
-</div>
+    {% else %}
+        <div class="container row text-center mt-4">
+            <h4>Aucun élément à afficher</h4>
+            <a href="/">← Retour à l'accueil</a>
+        </div>
+    {% endif %}
 {% endblock %}
