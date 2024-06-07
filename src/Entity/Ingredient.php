@@ -3,24 +3,27 @@
 namespace App\Entity;
 
 use App\Repository\IngredientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @ORM\Entity(repositoryClass=IngredientRepository::class)
+ */
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
 #[UniqueEntity('name')]
 class Ingredient
 {
-/*
- * @ORM\Entity(repositoryClass=IngredientRepository::class)
- */
     /**
      * Ingredient constructor.
      * set the createdAt property to the current date and time when a new Ingredient object is created.
- */
+    */
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->recipes = new ArrayCollection();
     }
 
     #[ORM\Id]
@@ -50,6 +53,12 @@ class Ingredient
     #[ORM\Column]
     #[Assert\NotNull(message: "The createdAt date cannot be null")]
     private ?\DateTimeImmutable $createdAt = null;
+
+    /**
+     * @var Collection<int, Recipe>
+     */
+    #[ORM\ManyToMany(targetEntity: Recipe::class, mappedBy: 'ingredients')]
+    private Collection $recipes;
 
     public function getId(): ?int
     {
@@ -83,6 +92,33 @@ class Ingredient
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    public function addRecipe(Recipe $recipe): static
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
+            $recipe->addIngredient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipe(Recipe $recipe): static
+    {
+        if ($this->recipes->removeElement($recipe)) {
+            $recipe->removeIngredient($this);
+        }
+
+        return $this;
     }
 
 }
