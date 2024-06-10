@@ -35,10 +35,12 @@ class Recipe
     /**
      * @ORM\PrePersist
      */
-    public function setCreatedAtValue(): void
+    #[ORM\PrePersist()]
+    public function setUpdatedAt(): void
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
@@ -210,13 +212,6 @@ class Recipe
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 
     /**

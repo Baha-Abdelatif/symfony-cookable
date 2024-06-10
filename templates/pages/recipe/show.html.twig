@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cookable - Ingredients{% endblock %}
+
+
+{% block body %}
+    <div class="container mx-auto">
+        {% if recette %}
+            <h1 class="my-4">Recette n°{{ recette.id }}</h1>
+            <div id="container" class="row mx-auto align-middle">
+                    <div class="cards_container coffee">
+                        <div class="card rounded mx-auto">
+                            <div class="bg-img">
+                                <div class="overlay"></div>
+                                <div class="inner">
+                                    <h1>{{ recette.name }}</h1>
+									<div class="d-inline-flex justify-content-between align-items-center">
+                                        {% if recette.time %}
+									<small class="font-weight-light d-block text-light me-2">
+                                        <i class="fa-regular fa-clock"></i>&nbsp;
+                                        {{ (recette.time/60)|round(1, 'floor') }}h
+                                    </small>
+                                        {% endif %}
+                                        {% if recette.people %}
+									<small class="font-weight-light d-block text-light me-2">
+                                        <i class='fa-solid fa-users'></i>&nbsp;{{ recette.people }} personne(s)
+                                    </small>
+                                        {% endif %}
+                                        {% if recette.price %}
+									<small class="font-weight-light d-block text-light me-2">
+                                        <i class="fa-solid fa-euro-sign"></i>&nbsp;
+                                        {{ recette.price }}€
+                                    </small>
+                                        {% endif %}
+
+									</div>
+{#                                    <small class="price">#}
+{#                                        <span class="dollar">$14</span> #}
+{#                                        <span class="text">spent so far<br> $28 remaining</span>#}
+{#                                    </small>#}
+                                </div>
+                            </div>
+                            <div class="info">
+                                <div class="right">
+                                    <small>nov<span>13 - 17</span></small>
+                                </div>
+                                <div class="left">
+                                    <div class="wrapper">
+                                        <h4>28</h4><span class="small_border"></span>
+                                        <small>campers</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        {% else %}
+            <h1 class="my-4">Recette non trouvée</h1>
+        {% endif %}
+    </div>
+{% endblock %}
