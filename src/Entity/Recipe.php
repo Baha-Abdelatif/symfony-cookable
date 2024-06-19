@@ -10,15 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=RecipeRepository::class)
- *
- * @UniqueEntity('name')
- *
- * @ORM\Table(name="recipes")
- *
- * @ORM\HasLifecycleCallbacks()
- */
 #[UniqueEntity('name')]
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 #[ORM\Table(name: 'recipes')]
@@ -32,10 +23,7 @@ class Recipe
         $this->ingredients = new ArrayCollection();
     }
 
-    /**
-     * @ORM\PrePersist
-     */
-    #[ORM\PrePersist()]
+    #[ORM\PreUpdate]
     public function setUpdatedAt(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
