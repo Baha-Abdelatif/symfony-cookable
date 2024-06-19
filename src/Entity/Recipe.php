@@ -192,12 +192,12 @@ class Recipe
         return $this;
     }
 
-    public function isFavorite(): ?bool
+    public function isFavorite(): bool
     {
         return $this->isFavorite;
     }
 
-    public function setFavorite(bool $isFavorite): static
+    public function setIsFavorite(bool $isFavorite): static
     {
         $this->isFavorite = $isFavorite;
 

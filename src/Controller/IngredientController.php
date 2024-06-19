@@ -84,10 +84,10 @@ class IngredientController extends AbstractController
             $ingredient = $form->getData();
             $manager->persist($ingredient);
             $manager->flush();
-            $this->addFlash('success', 'Votre ingredient a bien été ajouté à la liste !');
+            $this->addFlash('success', 'Votre ingredient a bien été modifié !');
             return $this->redirectToRoute('ingredients.index');
         }elseif ($form->isSubmitted() && !$form->isValid()){
-            $this->addFlash('danger', 'Un problème est survenu lors de la création de l\'ingredient');
+            $this->addFlash('danger', 'Un problème est survenu lors de la modification de l\'ingredient.');
             return $this->redirectToRoute('ingredients.index');
         }
         return $this->render('pages/ingredient/edit.html.twig', [
@@ -101,7 +101,7 @@ class IngredientController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[Route('/{id}/delete', name: 'delete', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[Route('/delete/{id}', name: 'delete', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function delete(Ingredient $ingredient, EntityManagerInterface $manager):Response
     {
         $manager->remove($ingredient);

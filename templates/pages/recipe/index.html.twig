@@ -33,14 +33,11 @@
                 <table class="table table-bordered table-hover table-striped text-end">
                     <thead class="thead-primary">
                     <tr class="table-primary">
-                        <th class="px-3" scope="col" colspan="1"><strong>#</strong></th>
+                        <th class="px-3" scope="col" ><strong>#</strong></th>
                         <th class="px-3 text-start" scope="col" colspan="2">Recette</th>
-                        <th class="px-3" scope="col" colspan="1">Nb. personnes</th>
-                        <th class="px-3" scope="col" colspan="1">Durée</th>
-                        <th class="px-3" scope="col" colspan="1">Difficulté</th>
-                        <th class="px-3" scope="col" colspan="2">Description</th>
-                        <th class="px-3" scope="col" colspan="1">Prix €</th>
-                        <th class="px-3" scope="col" colspan="1">Favoris</th>
+                        <th class="px-3" scope="col" >Difficulté</th>
+                        <th class="px-3" scope="col" >Prix €</th>
+                        <th class="px-3" scope="col" >Favoris</th>
                         <th class="px-3" scope="col" colspan="2">Crée le</th>
                         <th class="px-3" scope="col" colspan="2">Modifiée le</th>
                         <th class="px-3" scope="col" colspan="2"></th>
@@ -49,16 +46,17 @@
                     <tbody>
                     {% for recette in recettes %}
                         <tr>
-                            <th class="px-3 align-middle" scope="row" colspan="1">{{ "%02d"|format(recette.id) }}</th>
-                            <td class="px-3 text-start align-middle" colspan="2">{{ recette.name }}</td>
-                            <td class="px-3 align-middle" colspan="1">{{ recette.people ? recette.people:"" }}</td>
-                            <td class="px-3 align-middle" colspan="1">{{ recette.time ? ((recette.time/60)|round(1, 'floor'))~"h":""
-                                }}</td>
-                            <th class="px-3 align-middle" colspan="1">{{ recette.difficulty~"/5" ? recette.difficulty:""
-                                }}</th>
-                            <th class="px-3 align-middle" colspan="2">{{ recette.description|u.truncate(10, '...',false) }}</th>
-                            <th class="px-3 align-middle" colspan="1">{{ recette.price ? recette.price~"€" : ""}}</th>
-                            <th class="px-3 align-middle" colspan="1">{{ recette.favorite == 1 ? "✅" :"" }}</th>
+                            <th class="px-3 align-middle" scope="row" >{{ "%02d"|format(recette.id) }}</th>
+                            <td class="px-3 text-start align-middle" colspan="2">
+                                <a href={{ path('recettes.show', {'id': recette.id})}}>
+                                    {{ recette.name }}
+                                </a>
+                            </td>
+                            <td class="px-3 align-middle" >
+                                {{ recette.difficulty ? recette.difficulty~"/5":"n/a"}}
+                            </td>
+                            <td class="px-3 align-middle" >{{ recette.price ? recette.price~"€" : "n/a"}}</td>
+                            <td class="px-3 align-middle" >{{ recette.favorite == 1 ? "✅" :"n/a" }}</td>
                             <td class="px-3 align-middle" colspan="2">{{ recette.createdAt|date("d-m-Y") }}</td>
                             <td class="px-3 align-middle" colspan="2">{{ recette.updatedAt|date("d-m-Y") }}</td>
                             <td class="d-flex align-items-center justify-content-evenly" colspan="2">
