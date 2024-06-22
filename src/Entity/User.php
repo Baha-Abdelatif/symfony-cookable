@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -10,12 +11,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\EntityListeners(["App\EntityListener\UserListener"])]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     #[ORM\Id]
@@ -24,18 +26,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Length(
         min: 2,
         max: 180,
         minMessage: "The email must be at least {{ limit }} characters long",
         maxMessage: "The email cannot be longer than {{ limit }} characters"
     )]
-    #[Assert\Email()]
+    #[Assert\Email]
     private string $email;
 
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Assert\Length(
         min: 2,
         max: 50,
@@ -57,21 +59,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string> The user roles
      */
     #[ORM\Column(type: 'json')]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private array $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var ?string The hashed password
      */
     #[ORM\Column]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private ?string $password = null;
 
     private ?string $plainPassword = null;
 
     #[ORM\Column]
-    #[Assert\NotNull()]
-    private \DateTimeImmutable $createdAt;
+    #[Assert\NotNull]
+    private DateTimeImmutable $createdAt;
 
     public function getId(): ?int
     {
@@ -97,7 +99,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->email;
     }
 
     public function getFullName(): ?string
@@ -191,7 +193,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }

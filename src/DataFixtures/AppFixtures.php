@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Ingredient;
 use App\Entity\Recipe;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -31,21 +32,32 @@ class AppFixtures extends Fixture
         }
 
 //        Recipes
-        for($j=0;$j<33;$j++){
+        for ($j = 0; $j < 33; $j++) {
             $recipe = new Recipe();
-            $recipe->setName($this->faker->sentence(mt_rand(1,5)))
-                ->setTime(mt_rand(0,1) == 1 ? mt_rand(1,1440) : null)
-                ->setPeople(mt_rand(0,1) == 1 ? mt_rand(1,50) : null)
-                ->setDifficulty(mt_rand(0,1) == 1 ? mt_rand(1,5) : null)
+            $recipe->setName($this->faker->sentence(mt_rand(1, 3)))
+                ->setTime(mt_rand(0, 1) == 1 ? mt_rand(1, 1440) : null)
+                ->setPeople(mt_rand(0, 1) == 1 ? mt_rand(1, 50) : null)
+                ->setDifficulty(mt_rand(0, 1) == 1 ? mt_rand(1, 5) : null)
                 ->setDescription($this->faker->text(mt_rand(20, 1500)))
-                ->setPrice(mt_rand(0,1) == 1 ? mt_rand(2,1000*2)/2 : null) //mt_rand(2,1000*2)/2 -> return a float number
+                ->setPrice(mt_rand(0, 1) == 1 ? mt_rand(2, 1000 * 2) / 2 : null) //mt_rand(2,1000*2)/2 -> return a float number
                 ->setIsFavorite(mt_rand(0, 1) == 1);
 
-            for($k=0;$k<mt_rand(3,15);$k++){
-                $recipe->addIngredient($ingredients[mt_rand(0,count($ingredients)-1)]);
+            for ($k = 0; $k < mt_rand(3, 15); $k++) {
+                $recipe->addIngredient($ingredients[mt_rand(0, count($ingredients) - 1)]);
             }
 
             $manager->persist($recipe);
+        }
+
+// Users
+        for ($i = 0; $i < 10; $i++) {
+            $user = new User();
+            $user->setFullName($this->faker->name())
+                ->setUsername(mt_rand(0, 1) == 1 ? $this->faker->userName() : null)
+                ->setEmail($this->faker->email())
+                ->setRoles(['ROLE_USER'])
+                ->setPlainPassword('1234567');
+            $manager->persist($user);
         }
 
         $manager->flush();
