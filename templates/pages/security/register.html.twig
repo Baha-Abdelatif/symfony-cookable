@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cookable - Inscription{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="mt-4 mb-4 text-center">M'inscrire sur Cookable !</h1>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>Succès : </strong> {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>Erreur : </strong> {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>Attention : </strong> {{ message }}
+        </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            {{ form(form) }}
+        </div>
+        {#        {% if error %} #}
+        {#            <div class="alert alert-dismissible alert-danger"> #}
+        {#                <button type="button" class="btn-close" data-bs-dismiss="alert"></button> #}
+        {#                <strong>Erreur : </strong> {{ error.messageKey|trans(error.messageData, 'security') }} #}
+        {#            </div> #}
+        {#        {% endif %} #}
+    </div>
+</div>
+    {% endblock %}
